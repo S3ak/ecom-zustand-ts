@@ -1,27 +1,33 @@
 import "./App.css";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Products from "./components/products";
+import Products from "@components/products";
+import Cart from "@components/cart";
+import Nav from "@components/nav";
+import Hero from "@components/hero";
+import Promo from "@components/promo";
 
 const queryClient = new QueryClient();
 
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <div>
-        <header>
-          <title>Ecomm Example</title>
+      <div className="app">
+        <header className="header">
+          <Nav />
         </header>
-        <main>
-          <h1>Home Page</h1>
-          <article>
-            <p>This website showcases how to use zustand with typescript</p>
-          </article>
 
-          <Products />
-        </main>
-        <footer>copy write</footer>
+        <section className="main">
+          <main>
+            <Hero />
+            <Products />
+            <Promo />
+          </main>
+
+          <footer>copy write</footer>
+        </section>
       </div>
+      <Cart />
     </QueryClientProvider>
   );
 }

@@ -11,6 +11,7 @@ declare module "products" {
     stock: number;
     thumbnail: string;
     title: string;
+    quantity: number;
   };
 
   export type Products = {

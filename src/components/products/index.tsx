@@ -1,6 +1,7 @@
 import { ResponseProductData } from "products";
 
 import { useQuery } from "@tanstack/react-query";
+import { useCartStore } from "@/store/useCartStore";
 
 export default function Products() {
   const { isPending, error, data } = useQuery<ResponseProductData>({
@@ -8,6 +9,8 @@ export default function Products() {
     queryFn: () =>
       fetch("https://dummyjson.com/products").then((res) => res.json()),
   });
+
+  const additemToCart = useCartStore((state) => state.addItem);
 
   if (isPending) {
     return <div>Loading...</div>;
@@ -29,7 +32,10 @@ export default function Products() {
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {products.map((product) => (
             <div key={product.id} className="group relative">
-              <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+              <div
+                className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
+                onClick={() => additemToCart(product)}
+              >
                 <img
                   src={product.images[0]}
                   alt={product.description}
@@ -39,10 +45,11 @@ export default function Products() {
               <div className="mt-4 flex justify-between">
                 <div>
                   <h3 className="text-sm text-gray-700">
-                    <a href={`/products/${product.id}`}>
+                    {/* FIXME: reduce size of span */}
+                    {/* <a href={`/products/${product.id}`}>
                       <span aria-hidden="true" className="absolute inset-0" />
                       {product.title}
-                    </a>
+                    </a> */}
                   </h3>
 
                   <p className="mt-1 text-sm text-gray-500">
