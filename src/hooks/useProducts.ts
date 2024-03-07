@@ -1,16 +1,30 @@
-import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { ResponseProductData } from "products";
 
-// FIXME: This is a placeholder for the actual type of the response data
-const useUrl = () => {
-  const { isPending, error, data } = useQuery({
-    queryKey: ["repoData"],
-    queryFn: () =>
-      fetch("https://api.github.com/repos/TanStack/query").then((res) =>
-        res.json()
-      ),
-  });
+const useProducts = () => {
+  const [page, setPage] = useState(0);
 
-  return { data, isPending, error };
+  const fetchProducts = (page = 0) =>
+    fetch(`https://dummyjson.com/products?skip=${page}`).then((res) =>
+      res.json()
+    );
+
+  const { isPending, error, data, isPlaceholderData } =
+    useQuery<ResponseProductData>({
+      queryKey: ["products", page],
+      queryFn: () => fetchProducts(page),
+      placeholderData: keepPreviousData,
+    });
+
+  return {
+    isPending,
+    error,
+    data,
+    isPlaceholderData,
+    page,
+    setPage,
+  };
 };
 
-export default useUrl;
+export default useProducts;
