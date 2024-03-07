@@ -3,25 +3,32 @@ import { create } from "zustand";
 
 type ProductWithQuantity = Product & { quantity: number };
 
-type CartStore = {
+type State = {
   items: ProductWithQuantity[];
-  addItem: (item: Product) => void;
-  removeItem: (item: Product) => void;
-  removeItemMaxQuantity: (item: Product) => void;
   total: number;
   count: number;
   isOpen: boolean;
+};
+
+type Action = {
+  addItem: (item: Product | ProductWithQuantity) => void;
+  removeItem: (item: Product | ProductWithQuantity) => void;
+  removeItemMaxQuantity: (item: Product) => void;
   toggleIsOpen: () => void;
   clearCart: () => void;
 };
 
-export const useCartStore = create<CartStore>((set) => ({
-  isOpen: true,
+const initialState: State = {
+  isOpen: false,
   total: 0,
   count: 0,
   items: [],
+};
+
+export const useCartStore = create<State & Action>((set) => ({
+  ...initialState,
   toggleIsOpen: () => set((state) => ({ isOpen: !state.isOpen })),
-  clearCart: () => set({ count: 0, total: 0, items: [] }),
+  clearCart: () => set(initialState),
   addItem: (item) => {
     set((state) => {
       // Create a new cart so we don't mutate our state
@@ -55,16 +62,22 @@ export const useCartStore = create<CartStore>((set) => ({
   },
   removeItem: (item) => {
     set((state) => {
-      let items = state.items;
+      let newItems = [];
 
       if (item.quantity > 1) {
-        // FIXME: This is a placeholder for the actual logic to remove an item from the cart
-        item.quantity = item.quantity--;
+        // We decrease the quantity if the product is already in the cart
+        item.quantity = item.quantity - 1;
+        // We create a new cart so we don't mutate our state but we use the map to edit the item in the array
+        newItems = state.items.map((i) => (i.id === item.id ? item : i));
       } else {
-        items = state.items.filter((i) => i !== item);
+        newItems = state.items.filter((i) => i !== item);
       }
 
-      return { items, total: calcTotal(items), count: calcCount(items) };
+      return {
+        items: newItems,
+        total: calcTotal(newItems),
+        count: calcCount(newItems),
+      };
     });
   },
   removeItemMaxQuantity: (item) => {

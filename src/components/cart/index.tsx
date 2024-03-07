@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon, PlusIcon, MinusIcon } from "@heroicons/react/24/outline";
 import { useCartStore } from "@/store/useCartStore";
 
 export default function Cart() {
@@ -11,6 +11,8 @@ export default function Cart() {
     products,
     removeItemMaxQuantity,
     clearCart,
+    addItem,
+    removeItem,
   } = useCartStore((state) => ({
     total: state.total,
     products: state.items,
@@ -18,6 +20,8 @@ export default function Cart() {
     open: state.isOpen,
     removeItemMaxQuantity: state.removeItemMaxQuantity,
     clearCart: state.clearCart,
+    addItem: state.addItem,
+    removeItem: state.removeItem,
   }));
 
   return (
@@ -101,6 +105,24 @@ export default function Cart() {
                                     <p className="text-gray-500">
                                       Qty {product.quantity}
                                     </p>
+
+                                    <div className="flex gap-1">
+                                      <button
+                                        type="button"
+                                        className="font-medium text-indigo-600 hover:text-indigo-500"
+                                        onClick={() => removeItem(product)}
+                                      >
+                                        <MinusIcon className="h-6 w-6" />
+                                      </button>
+
+                                      <button
+                                        type="button"
+                                        className="font-medium text-indigo-600 hover:text-indigo-500"
+                                        onClick={() => addItem(product)}
+                                      >
+                                        <PlusIcon className="h-6 w-6" />
+                                      </button>
+                                    </div>
 
                                     <div className="flex">
                                       <button
