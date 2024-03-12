@@ -6,10 +6,12 @@ import Root from "@/routes/root";
 import Home from "@/routes/home";
 import Product from "@/routes/product";
 import { loader as productLoader } from "@/routes/product/actions";
+import { loader as productsLoader } from "@/routes/products/actions";
 import ErrorPage from "@/pages/error-page";
 
 // import App from "./App.tsx";
 import "./index.css";
+import ProductsPage from "./routes/products";
 
 const queryClient = new QueryClient();
 
@@ -20,8 +22,13 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        index: true,
+        path: "/react-query-products",
         element: <Home />,
+      },
+      {
+        index: true,
+        loader: productsLoader,
+        element: <ProductsPage />,
       },
       {
         path: "/products/:productId",

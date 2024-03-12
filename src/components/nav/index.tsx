@@ -460,7 +460,7 @@ export default function Nav() {
                 {/* Search */}
                 <div className="flex lg:ml-6">
                   <Link
-                    to="#"
+                    to="/"
                     className="p-2 text-gray-400 hover:text-gray-500"
                   >
                     <span className="sr-only">Search</span>
@@ -473,16 +473,14 @@ export default function Nav() {
 
                 {/* Cart */}
                 <div className="flow-root ml-4 lg:ml-6" onClick={toggleIsOpen}>
-                  <Link to="#" className="flex items-center p-2 -m-2 group">
-                    <ShoppingBagIcon
-                      className="flex-shrink-0 w-6 h-6 text-gray-400 group-hover:text-gray-500"
-                      aria-hidden="true"
-                    />
-                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                      {count}
-                    </span>
-                    <span className="sr-only">items in cart, view bag</span>
-                  </Link>
+                  <ShoppingBagIcon
+                    className="flex-shrink-0 w-6 h-6 text-gray-400 group-hover:text-gray-500"
+                    aria-hidden="true"
+                  />
+                  <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
+                    {count}
+                  </span>
+                  <span className="sr-only">items in cart, view bag</span>
                 </div>
               </div>
             </div>
