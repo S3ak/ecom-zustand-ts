@@ -19,7 +19,48 @@
 
 body {
   margin: 0;
-  display: flex;
+  padding: 0;
   place-items: center;
   min-height: 100vh;
+  height: 100%;
+  width: 100%;
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+}
+
+.header {
+  flex: 0 1 min-content;
+  width: 100%;
+}
+
+.main {
+  width: 100%;
+  flex: 2 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+}
+
+.main_main {
+  flex: 1 1 auto;
+  width: 100%;
+  padding: 0;
+}
+
+.main_footer {
+  flex: 0 1 min-content;
+  width: 100%;
 }
