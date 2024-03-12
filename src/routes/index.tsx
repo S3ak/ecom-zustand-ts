@@ -32,7 +32,9 @@ function Index() {
 }
 
 function fetchProducts(skip: number = 0) {
-  return fetch(`https://dummyjson.com/products?skip=${skip}`)
+  const url = new URL("https://dummyjson.com/products");
+  url.searchParams.set("skip", skip.toString());
+  return fetch(url)
     .then((res) => res.json())
     .then((data) => data as ResponseProductData);
 }

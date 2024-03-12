@@ -2,6 +2,8 @@ import { useCartStore } from "@/store/useCartStore";
 import Pagination from "@components/pagination";
 import { Link } from "@tanstack/react-router";
 import { Product } from "products";
+import Select from "../inputGroup/select";
+import Input from "../inputGroup/input";
 
 type TProps = {
   products: Product[];
@@ -19,6 +21,9 @@ export default function Products({ products, limit, skip, total }: TProps) {
         <h2 className="text-2xl font-bold tracking-tight text-gray-900">
           -10% extra on everything at the end of the season
         </h2>
+
+        <Input label="search" id="q" onChange={} />
+        <Select label="catergory" id="catergory" options={["1", "2", "3"]} />
 
         <div className="grid grid-cols-1 mt-6 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {products.map((product) => (
