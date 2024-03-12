@@ -4,6 +4,7 @@ import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { ResponseProductData } from "products";
 import { useCartStore } from "@/store/useCartStore";
 import Pagination from "@components/pagination";
+import { Link } from "react-router-dom";
 
 export default function Products() {
   const [page, setPage] = useState(0);
@@ -34,32 +35,32 @@ export default function Products() {
 
   return (
     <div className="bg-white">
-      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+      <div className="max-w-2xl px-4 py-16 mx-auto sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
         <h2 className="text-2xl font-bold tracking-tight text-gray-900">
           -10% extra on everything at the end of the season
         </h2>
 
-        <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+        <div className="grid grid-cols-1 mt-6 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {products.map((product) => (
-            <div key={product.id} className="group relative">
+            <div key={product.id} className="relative group">
               <div
-                className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
+                className="w-full overflow-hidden bg-gray-200 rounded-md aspect-h-1 aspect-w-1 lg:aspect-none group-hover:opacity-75 lg:h-80"
                 onClick={() => additemToCart(product)}
               >
                 <img
                   src={product.images[0]}
                   alt={product.description}
-                  className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                  className="object-cover object-center w-full h-full lg:h-full lg:w-full"
                 />
               </div>
-              <div className="mt-4 flex justify-between">
+              <div className="flex justify-between mt-4">
                 <div>
                   <h3 className="text-sm text-gray-700">
                     {/* FIXME: reduce size of span */}
-                    {/* <a href={`/products/${product.id}`}>
+                    <Link to={`/products/${product.id}`}>
                       <span aria-hidden="true" className="absolute inset-0" />
                       {product.title}
-                    </a> */}
+                    </Link>
                   </h3>
 
                   <p className="mt-1 text-sm text-gray-500">
