@@ -1,37 +1,17 @@
-import { useState } from "react";
-import { useQuery, keepPreviousData } from "@tanstack/react-query";
-
-import { ResponseProductData } from "products";
 import { useCartStore } from "@/store/useCartStore";
 import Pagination from "@components/pagination";
 import { Link } from "@tanstack/react-router";
+import { Product } from "products";
 
-export default function Products() {
-  const [page, setPage] = useState(0);
+type TProps = {
+  products: Product[];
+  limit: number;
+  skip: number;
+  total: number;
+};
 
-  const fetchProducts = (page = 0) =>
-    fetch(`https://dummyjson.com/products?skip=${page}`).then((res) =>
-      res.json()
-    );
-
-  const { isPending, error, data, isPlaceholderData } =
-    useQuery<ResponseProductData>({
-      queryKey: ["products", page],
-      queryFn: () => fetchProducts(page),
-      placeholderData: keepPreviousData,
-    });
-
+export default function Products({ products, limit, skip, total }: TProps) {
   const additemToCart = useCartStore((state) => state.addItem);
-
-  if (isPending) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
-
-  const { products, limit, skip, total } = data;
 
   return (
     <div className="bg-white">
@@ -83,17 +63,11 @@ export default function Products() {
 
         <section>
           <Pagination
-            onPrevious={() =>
-              setPage((prevPage) => Math.max(prevPage - limit, 0))
-            }
-            onNext={() => {
-              if (!isPlaceholderData) {
-                setPage((prevPage) => prevPage + limit);
-              }
-            }}
             currentPage={skip + 1}
             count={limit + skip}
             totalResults={total}
+            limit={limit}
+            skip={skip}
           />
         </section>
       </div>
