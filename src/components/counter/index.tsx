@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import useAPI from "@/hooks/useAPI";
+
 function useCounter() {
   const [count, setCount] = useState(0);
 
@@ -8,7 +10,7 @@ function useCounter() {
   }
 
   function decrement() {
-    setCount((prevCount) => prevCount - 1);
+    setCount((prevCount) => Math.max(prevCount - 1, 0));
   }
 
   return { count, increment, decrement };
@@ -16,6 +18,20 @@ function useCounter() {
 
 export default function Counter() {
   const { decrement, count, increment } = useCounter();
+
+  const { data, isLoading } = useAPI(
+    "https://jsonplaceholder.typicode.com/posts/1"
+  );
+
+  const { data: productsData, isLoading: productsIsLoading } = useAPI(
+    "https://dummyjson.com/products"
+  );
+
+  console.log("data >>>", data);
+  console.log("isLoading >>>", isLoading);
+
+  console.log("DUMMY data >>>", productsData);
+  console.log("DUMMY  isLoading >>>", productsIsLoading);
 
   return (
     <section>
