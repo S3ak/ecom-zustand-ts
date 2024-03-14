@@ -6,6 +6,7 @@ import Cart from "@components/cart";
 import Nav from "@components/nav";
 import Hero from "@components/hero";
 import Promo from "@components/promo";
+import ContactForm from "./components/contact-form";
 
 const queryClient = new QueryClient();
 
@@ -19,9 +20,7 @@ export default function App() {
 
         <section className="main">
           <main>
-            <Hero />
-            <Products />
-            <Promo />
+            <ContactForm />
           </main>
 
           <footer>copy write</footer>
