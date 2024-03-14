@@ -1,71 +1,47 @@
-import { useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+
+type Inputs = {
+  name: string;
+  email: string;
+  message: string;
+};
 
 export default function ContactForm() {
-  const [name, setName] = useState("foo");
-  const [email, setEmail] = useState("bar@mail.com");
-  const [message, setMessage] = useState("zar");
+  const { register, handleSubmit, formState } = useForm<Inputs>();
 
-  function handleOnSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
+  const onSubmit = ({ name, message, email }) => {
     fetch("https://dummyjson.com/posts/add", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        apiName: name,
-        apiEmail: email,
-        apiMessage: message,
+        name,
+        message,
+        email,
       }),
     })
       .then((res) => res.json())
       .then(console.log);
-
-    console.log("submit form");
-  }
-
-  const handleOnChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const value = event.target.value;
-    switch (event.target.id) {
-      case "name":
-        setName(value);
-        break;
-      case "email":
-        setEmail(value);
-        break;
-      case "message":
-        setMessage(value);
-    }
   };
 
   return (
     <div>
       <h2>Contact Form</h2>
 
-      <form onSubmit={handleOnSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label htmlFor="name">Name</label>
-          <input value={name} onChange={handleOnChange} type="text" id="name" />
+          <input {...register("name", { required: true })} type="text" />
+          {formState.errors.name && <span>This field is required</span>}
         </div>
 
         <div>
           <label htmlFor="email">Email</label>
-          <input
-            value={email}
-            onChange={handleOnChange}
-            type="email"
-            id="email"
-          />
+          <input {...register("email")} type="email" />
         </div>
 
         <div>
           <label htmlFor="message">Message</label>
-          <textarea
-            onChange={handleOnChange}
-            value={message}
-            id="message"
-          ></textarea>
+          <textarea {...register("message")}></textarea>
         </div>
         <br />
         <hr />
