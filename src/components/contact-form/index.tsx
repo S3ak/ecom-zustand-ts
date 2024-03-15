@@ -1,21 +1,29 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import InputField from "../form/input-field";
 
 const contactFormSchema = yup
   .object({
-    name: yup.string().min(2).max(20).required("Name is required"),
+    name: yup
+      .string()
+      .min(2)
+      .max(20)
+      .required("Bob need you to fill this out."),
     message: yup.string().min(2).max(100).required(),
     email: yup.string().email().required(),
   })
   .required();
 
-type ContactFormInputs = yup.InferType<typeof contactFormSchema>;
+export type ContactFormInputs = yup.InferType<typeof contactFormSchema>;
 
 export default function ContactForm() {
-  const { register, handleSubmit, formState } = useForm<ContactFormInputs>({
-    resolver: yupResolver(contactFormSchema),
-  });
+  const { register, handleSubmit, formState, reset } =
+    useForm<ContactFormInputs>({
+      resolver: yupResolver(contactFormSchema),
+      mode: "onBlur",
+    });
+
   const { errors } = formState;
 
   const onSubmit: SubmitHandler<ContactFormInputs> = ({
@@ -45,24 +53,14 @@ export default function ContactForm() {
         className="w-full px-8 pt-6 pb-8 mb-4 bg-white rounded shadow-md"
       >
         <fieldset className="flex flex-col gap-2">
-          <div>
-            <label
-              htmlFor="name"
-              className="block mb-2 text-sm font-bold text-gray-700"
-            >
-              Name
-            </label>
-            <input
-              {...register("name")}
-              type="text"
-              aria-label="name"
-              aria-invalid={errors.name ? "true" : "false"}
-              aria-placeholder="John Smith"
-              placeholder="John Smith"
-              className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            />
-            {errors.name && <span>This field is required</span>}
-          </div>
+          <InputField
+            type="text"
+            label="Name"
+            name="name"
+            placeholder="John Doe"
+            register={register}
+            errors={errors}
+          />
 
           <div>
             <label
@@ -76,8 +74,11 @@ export default function ContactForm() {
               type="email"
               aria-placeholder="mo@mail.com"
               placeholder="mo@mail.com"
-              className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+              className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-white ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             />
+            {errors.email && (
+              <p className="text-red-700">{errors.email.message}</p>
+            )}
           </div>
 
           <div>
@@ -91,8 +92,11 @@ export default function ContactForm() {
               {...register("message")}
               aria-placeholder="..."
               placeholder="hello world..."
-              className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+              className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-white ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             ></textarea>
+            {errors.message && (
+              <p className="text-red-700">{errors.message.message}</p>
+            )}
           </div>
         </fieldset>
         <br />
@@ -101,6 +105,17 @@ export default function ContactForm() {
           className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
         >
           Send
+        </button>
+
+        <button
+          type="reset"
+          onClick={(e) => {
+            e.preventDefault();
+            reset();
+          }}
+          className="px-4 py-2 ml-5 font-bold text-white bg-red-500 rounded hover:bg-red-700"
+        >
+          Reset
         </button>
       </form>
     </div>
